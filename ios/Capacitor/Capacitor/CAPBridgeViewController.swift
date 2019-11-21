@@ -7,8 +7,8 @@ import UIKit
 import WebKit
 import Cordova
 
-public class CAPBridgeViewController: UIViewController, CAPBridgeDelegate, WKScriptMessageHandler, WKUIDelegate, WKNavigationDelegate {
-  
+open class CAPBridgeViewController: UIViewController, CAPBridgeDelegate, WKScriptMessageHandler, WKUIDelegate, WKNavigationDelegate {
+
   private var webView: WKWebView?
   
   public var bridgedWebView: WKWebView? {
@@ -279,7 +279,7 @@ public class CAPBridgeViewController: UIViewController, CAPBridgeDelegate, WKScr
     CAPLog.print("⚡️  Error: " + error.localizedDescription)
   }
 
-  public func webView(_ webView: WKWebView, didFailProvisionalNavigation navigation: WKNavigation!, withError error: Error) {
+  open func webView(_ webView: WKWebView, didFailProvisionalNavigation navigation: WKNavigation!, withError error: Error) {
     CAPLog.print("⚡️  WebView failed provisional navigation")
     CAPLog.print("⚡️  Error: " + error.localizedDescription)
   }
