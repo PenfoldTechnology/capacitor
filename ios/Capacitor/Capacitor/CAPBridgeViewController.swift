@@ -270,11 +270,11 @@ open class CAPBridgeViewController: UIViewController, CAPBridgeDelegate, WKScrip
     decisionHandler(.allow)
   }
 
-  public func webView(_ webView: WKWebView, didFinish navigation: WKNavigation!) {
+  open func webView(_ webView: WKWebView, didFinish navigation: WKNavigation!) {
     CAPLog.print("⚡️  WebView loaded")
   }
 
-  public func webView(_ webView: WKWebView, didFail navigation: WKNavigation!, withError error: Error) {
+  open func webView(_ webView: WKWebView, didFail navigation: WKNavigation!, withError error: Error) {
     CAPLog.print("⚡️  WebView failed to load")
     CAPLog.print("⚡️  Error: " + error.localizedDescription)
   }
