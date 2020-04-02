@@ -14,10 +14,10 @@ public class CAPSplashScreenPlugin: CAPPlugin {
   let launchShowDuration = 3000
   let launchAutoHide = true
 
-  let defaultFadeInDuration = 200
-  let defaultFadeOutDuration = 200
-  let defaultShowDuration = 3000
-  let defaultAutoHide = true
+  public let defaultFadeInDuration = 200
+  public let defaultFadeOutDuration = 200
+  public let defaultShowDuration = 3000
+  public let defaultAutoHide = true
 
   public override func load() {
     buildViews()
@@ -116,7 +116,7 @@ public class CAPSplashScreenPlugin: CAPPlugin {
     }, isLaunchSplash: true)
   }
 
-  func showSplash(showDuration: Int, fadeInDuration: Int, fadeOutDuration: Int, autoHide: Bool, backgroundColor: String?, spinnerStyle: String?, spinnerColor: String?, completion: @escaping () -> Void, isLaunchSplash: Bool) {
+  public func showSplash(showDuration: Int, fadeInDuration: Int, fadeOutDuration: Int, autoHide: Bool, backgroundColor: String?, spinnerStyle: String?, spinnerColor: String?, completion: @escaping () -> Void, isLaunchSplash: Bool) {
     DispatchQueue.main.async {
       if backgroundColor != nil {
         self.viewController.view.backgroundColor = UIColor(fromHex: backgroundColor!)
@@ -173,7 +173,7 @@ public class CAPSplashScreenPlugin: CAPPlugin {
     }
   }
 
-  func hideSplash(fadeOutDuration: Int) {
+  public func hideSplash(fadeOutDuration: Int) {
     hideSplash(fadeOutDuration: fadeOutDuration, isLaunchSplash: false)
   }
 
