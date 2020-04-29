@@ -116,8 +116,8 @@ The current ones you might configure are:
     // https://developer.apple.com/documentation/uikit/uiscrollview/contentinsetadjustmentbehavior
     "contentInset": "always",
     // Configure the Swift version to be used for Cordova plugins.
-    // Default is 4.0
-    "cordovaSwiftVersion": "3.0",
+    // Default is 5.0
+    "cordovaSwiftVersion": "4.2",
     // Minimum iOS version supported by the project.
     // Default is 11.0
     "minVersion": "11.3",
@@ -125,7 +125,10 @@ The current ones you might configure are:
     "cordovaLinkerFlags": ["-ObjC"],
     // A Boolean value that determines whether pressing on a link displays a preview of
     // the destination for the link.
-    "allowsLinkPreview": false
+    "allowsLinkPreview": false,
+    // A Boolean value that determines whether to hide native logs or not
+    // Default is false
+    "hideLogs": true
   },
   "electron": {
     // User agent of Capacitor WebView for Electron
