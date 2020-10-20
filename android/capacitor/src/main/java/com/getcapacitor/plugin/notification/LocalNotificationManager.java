@@ -32,6 +32,7 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
 
@@ -137,13 +138,17 @@ public class LocalNotificationManager {
 
     boolean notificationsEnabled = notificationManager.areNotificationsEnabled();
     if (!notificationsEnabled) {
-      call.error("Notifications not enabled on this device");
+      if(call != null){
+        call.error("Notifications not enabled on this device");
+      }
       return null;
     }
     for (LocalNotification localNotification : localNotifications) {
       Integer id = localNotification.getId();
       if (localNotification.getId() == null) {
-        call.error("LocalNotification missing identifier");
+        if(call != null) {
+          call.error("LocalNotification missing identifier");
+        }
         return null;
       }
       dismissVisibleNotification(id);
@@ -170,8 +175,8 @@ public class LocalNotificationManager {
     NotificationCompat.Builder mBuilder = new NotificationCompat.Builder(this.context, channelId)
             .setContentTitle(localNotification.getTitle())
             .setContentText(localNotification.getBody())
-            .setAutoCancel(true)
-            .setOngoing(false)
+            .setAutoCancel( localNotification.isAutoCancel( ) )
+            .setOngoing( localNotification.isOngoing( ) )
             .setPriority(NotificationCompat.PRIORITY_DEFAULT)
             .setGroupSummary(localNotification.isGroupSummary());
 
@@ -214,7 +219,9 @@ public class LocalNotificationManager {
       try {
         mBuilder.setColor(Color.parseColor(iconColor));
       } catch (IllegalArgumentException ex) {
-        call.error("Invalid color provided. Must be a hex string (ex: #ff0000");
+        if(call != null) {
+            call.error("Invalid color provided. Must be a hex string (ex: #ff0000");
+        }
         return;
       }
     }
@@ -294,7 +301,6 @@ public class LocalNotificationManager {
    * on a certain date "shape" (such as every first of the month)
    */
   // TODO support different AlarmManager.RTC modes depending on priority
-  // TODO restore alarm on device shutdown (requires persistence)
   private void triggerScheduledNotification(Notification notification, LocalNotification request) {
     AlarmManager alarmManager = (AlarmManager) context.getSystemService(Context.ALARM_SERVICE);
     LocalNotificationSchedule schedule = request.getSchedule();
@@ -333,9 +339,12 @@ public class LocalNotificationManager {
     // Cron like scheduler
     DateMatch on = schedule.getOn();
     if (on != null) {
+      long trigger = on.nextTrigger(new Date());
       notificationIntent.putExtra(TimedNotificationPublisher.CRON_KEY, on.toMatchString());
       pendingIntent = PendingIntent.getBroadcast(context, request.getId(), notificationIntent, PendingIntent.FLAG_CANCEL_CURRENT);
-      alarmManager.setExact(AlarmManager.RTC, on.nextTrigger(new Date()), pendingIntent);
+      alarmManager.setExact(AlarmManager.RTC, trigger, pendingIntent);
+      SimpleDateFormat sdf = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss");
+      Logger.debug(Logger.tags("LN"), "notification " + request.getId() + " will next fire at " + sdf.format(new Date(trigger)));
     }
   }
 
